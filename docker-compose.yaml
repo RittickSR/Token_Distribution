@@ -1,0 +1,63 @@
+version: '3.9'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis_server
+    command: ["redis-server", "--notify-keyspace-events", "KEA"]
+    ports:
+      - "8079:6379"
+
+  fastapi_app_1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastapi_app_1
+    environment:
+      - REDIS_HOST=redis_server
+      - REDIS_PORT=6379
+      - TOKEN_EXPIRY=${token_expiry}
+      - ACTIVE_EXPIRY=${active_expiry}
+      - KEEP_ALIVE_INTERVAL=${keep_alive_interval}
+    env_file:
+      - .env
+    ports:
+      - "8001:8000"
+    depends_on:
+      - redis
+
+  fastapi_app_2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastapi_app_2
+    environment:
+      - REDIS_HOST=redis_server
+      - REDIS_PORT=6379
+      - TOKEN_EXPIRY=${token_expiry}
+      - ACTIVE_EXPIRY=${active_expiry}
+      - KEEP_ALIVE_INTERVAL=${keep_alive_interval}
+    env_file:
+      - .env
+    ports:
+      - "8002:8000"
+    depends_on:
+      - redis
+
+  fastapi_app_3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastapi_app_3
+    environment:
+      - REDIS_HOST=redis_server
+      - REDIS_PORT=6379
+      - TOKEN_EXPIRY=${token_expiry}
+      - ACTIVE_EXPIRY=${active_expiry}
+      - KEEP_ALIVE_INTERVAL=${keep_alive_interval}
+    env_file:
+      - .env
+    ports:
+      - "8003:8000"
+    depends_on:
+      - redis
