@@ -57,7 +57,7 @@ async def unblock_given_token(token:Token,token_service:TokenService = Depends(g
     try:
         return await token_service.unblock_token(str(token.token))
     except Exception as e:
-        logger.errror(f"Error in unblock token: {e}")
+        logger.error(f"Error in unblock token: {e}")
         raise HTTPException(status_code=400, detail=str(e))
 
 

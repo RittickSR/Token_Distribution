@@ -129,17 +129,21 @@ class TokenService:
         if not await self.redis_client.sismember("Assigned", token_key):
             logger.error(f"{token} is not assigned")
             raise Exception("This token is not assigned and hence cannot be unblocked")
-
-        assigned_key = f"{token_key}:assigned"
-        tokens_key = f"{token_key}:tokens"
-        unassigned_key = f"{token_key}:unassigned"
-        await self.redis_client.srem("Assigned",token_key)
-        await self.redis_client.delete(assigned_key)
-        ttl = await self.redis_client.ttl(tokens_key)
-        await self.redis_client.sadd("Unassigned", token_key)
-        await self.redis_client.setex(unassigned_key,ttl,"active")
-        logger.info(f"Token {token} has been unblocked with ttl {ttl}")
-        return f"{token} has been unblocked"
+        try:
+            assigned_key = f"{token_key}:assigned"
+            tokens_key = f"{token_key}:tokens"
+            unassigned_key = f"{token_key}:unassigned"
+            await self.redis_client.srem("Assigned",token_key)
+            await self.redis_client.delete(assigned_key)
+            ttl = await self.redis_client.ttl(tokens_key)
+            logger.info(f"Acquired ttl is {ttl}")
+            await self.redis_client.sadd("Unassigned", token_key)
+            await self.redis_client.setex(unassigned_key,ttl,"active")
+            logger.info(f"Token {token} has been unblocked with ttl {ttl}")
+            return f"{token} has been unblocked"
+        except Exception as e:
+            logger.error(f"Error in unblocking token: {e}")
+            raise e
 
     async def delete_token(self,token:str):
         """

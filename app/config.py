@@ -1,3 +1,4 @@
+from pydantic import ConfigDict
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
@@ -8,7 +9,6 @@ class Settings(BaseSettings):
     keep_alive_interval:int = 300
     log_file_name:str = "app"
 
-    class Config:
-        env_file = "../.env"
+    model_config = ConfigDict(env_file="../.env")
 
 settings = Settings()
