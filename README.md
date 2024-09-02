@@ -74,6 +74,11 @@ TokenDistributor/
    pip install -r requirements.txt
    uvicorn app.main:app --reload
    ```
+   
+   ```bash
+   # Update redis server to send out keyspace notifications
+   redis-cli CONFIG SET notify-keyspace-events KEA
+   ```
 
 ## API Endpoints
 
