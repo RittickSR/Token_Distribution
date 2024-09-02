@@ -141,4 +141,11 @@ Here’s a high-level overview of the system architecture:
 2. **Redis**: Serves as the in-memory data store for tokens, utilizing sets for efficient management and keyspace notifications for TTL-based expiration handling.
 3. **Docker**: Containerizes the application and Redis for easy deployment and scalability.
 
-![System Design Diagram](System_Design.png)
+![System Design Diagram](resources/System_Design.png)
+
+
+## Demo Video
+
+Here’s a demo video of the TokenDistributor system:
+
+![Demo Video](resources/demo_video.mp4)
